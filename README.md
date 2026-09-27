@@ -57,3 +57,10 @@ Hệ thống sử dụng **Loki** và **Promtail** để tự động thu thập
 2. Ở thanh menu bên trái, chọn biểu tượng la bàn **Explore**.
 3. Chọn Data source là **Loki** ở góc trên cùng bên trái.
 4. Bấm vào **Log browser** để chọn container muốn xem log (vd: `container` = `/podcast-nginx`), hoặc nhập trực tiếp câu lệnh LogQL (tham khảo file `LOGQL_QUERIES.md`).
+
+## 5. Yêu cầu 4: Tích hợp Prometheus + Grafana giám sát container
+Dưới đây là kết quả cấu hình giám sát hệ thống và container trực quan thông qua Grafana (tích hợp Prometheus). Dashboard hiển thị thông tin tài nguyên theo thời gian thực:
+- **CPU Usage**: Theo dõi tải CPU của các container (`cadvisor`, `prometheus`, `mysqld-exporter`, `node-exporter`...).
+- **Memory Usage**: Theo dõi mức tiêu thụ RAM (bộ nhớ) tương ứng của từng container.
+
+![Grafana Dashboard](docs/grafana-dashboard.png)
