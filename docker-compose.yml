@@ -1,0 +1,207 @@
+# =============================================
+# Podcast Media Library - Docker Compose
+# Phase 1: Web App + MySQL + Nginx Reverse Proxy
+# =============================================
+
+services:
+  # ---- PHP-FPM Application ----
+  app:
+    build: ./app
+    container_name: podcast-app
+    restart: unless-stopped
+    volumes:
+      - ./app:/var/www/html
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+    environment:
+      - DB_HOST=mysql
+      - DB_NAME=${MYSQL_DATABASE}
+      - DB_USER=${MYSQL_USER}
+      - DB_PASS=${MYSQL_PASSWORD}
+    networks:
+      - frontend-net
+      - backend-net
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # ---- MySQL Database ----
+  mysql:
+    image: mysql:8.0
+    container_name: podcast-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./app/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+    networks:
+      - backend-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ---- phpMyAdmin ----
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: podcast-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_ABSOLUTE_URI: https://localhost/phpmyadmin/
+      UPLOAD_LIMIT: 100M
+    networks:
+      - frontend-net
+      - backend-net
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # ---- Nginx Reverse Proxy ----
+  nginx:
+    build: ./nginx
+    container_name: podcast-nginx
+    restart: unless-stopped
+    ports:
+      - "8888:8080"
+      - "8889:8443"
+    volumes:
+      - ./app/public:/var/www/html/public:ro
+    networks:
+      - frontend-net
+    depends_on:
+      - app
+      - phpmyadmin
+
+  # =============================================
+  # Phase 2: Monitoring (Prometheus + Grafana + Exporters)
+  # =============================================
+  
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: podcast-prometheus
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    networks:
+      - monitoring-net
+      - backend-net
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: podcast-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      - monitoring-net
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: podcast-node-exporter
+    restart: unless-stopped
+    networks:
+      - monitoring-net
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: podcast-cadvisor
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      - monitoring-net
+
+  mysqld-exporter:
+    image: prom/mysqld-exporter:latest
+    container_name: podcast-mysqld-exporter
+    restart: unless-stopped
+    environment:
+      - MYSQLD_EXPORTER_PASSWORD=matkhaumanh
+    command:
+      - --mysqld.username=exporter_user
+      - --mysqld.address=mysql:3306
+    networks:
+      - monitoring-net
+      - backend-net
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  # =============================================
+  # Phase 3: Logging (Loki + Promtail)
+  # =============================================
+  
+  loki:
+    image: grafana/loki:latest
+    container_name: podcast-loki
+    restart: unless-stopped
+    user: "0:0"
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./loki/loki-config.yml:/etc/loki/local-config.yaml
+      - loki_data:/loki
+    networks:
+      - monitoring-net
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: podcast-promtail
+    restart: unless-stopped
+    volumes:
+      - ./loki/promtail-config.yml:/etc/promtail/config.yml
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: -config.file=/etc/promtail/config.yml
+    networks:
+      - monitoring-net
+
+# ---- Networks ----
+networks:
+  frontend-net:
+    driver: bridge
+    name: podcast-frontend-net
+  backend-net:
+    driver: bridge
+    name: podcast-backend-net
+  monitoring-net:
+    driver: bridge
+    name: podcast-monitoring-net
+
+# ---- Volumes ----
+volumes:
+  mysql_data:
+    name: podcast-mysql-data
+  prometheus_data:
+    name: podcast-prometheus-data
+  grafana_data:
+    name: podcast-grafana-data
+  loki_data:
+    name: podcast-loki-data
