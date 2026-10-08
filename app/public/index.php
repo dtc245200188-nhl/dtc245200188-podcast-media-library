@@ -16,39 +16,106 @@ renderHeader('Trang chủ', 'home');
 
 <!-- Hero Section -->
 <section class="hero">
+    <!-- Glow Orbs -->
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+
     <div class="container">
-        <div class="hero-content">
-            <div class="hero-badge">
-                <span>🎧</span> Thư viện Podcast hàng đầu
+        <div class="hero-layout">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span>🎧</span> Thư viện Podcast hàng đầu
+                </div>
+                <h1 class="hero-title">
+                    Khám phá thế giới<br>
+                    <span class="gradient-text">Podcast Việt Nam</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Khám phá những câu chuyện, giọng nói và góc nhìn hay nhất từ khắp Việt Nam. Nghe mọi lúc, mọi nơi.
+                </p>
+                <div class="hero-actions">
+                    <a href="#latest-episodes" class="btn-hero-cta">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        Bắt đầu nghe ngay
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number"><?= $totalEpisodes ?? 0 ?></span>
+                        <span class="stat-label">Tập podcast</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number"><?= $totalCategories ?? 0 ?></span>
+                        <span class="stat-label">Danh mục</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Luôn sẵn sàng</span>
+                    </div>
+                </div>
             </div>
-            <h1 class="hero-title">
-                Khám phá thế giới<br>
-                <span class="gradient-text">Podcast Việt Nam</span>
-            </h1>
-            <p class="hero-subtitle">
-                Hàng trăm tập podcast chất lượng cao về công nghệ, kinh doanh, khoa học 
-                và nhiều chủ đề hấp dẫn khác. Nghe mọi lúc, mọi nơi.
-            </p>
-            <div class="hero-stats">
-                <div class="stat-item">
-                    <span class="stat-number"><?= $totalEpisodes ?></span>
-                    <span class="stat-label">Tập podcast</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number"><?= $totalCategories ?></span>
-                    <span class="stat-label">Danh mục</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">24/7</span>
-                    <span class="stat-label">Luôn sẵn sàng</span>
+
+            <!-- Illustration (desktop only) -->
+            <div class="hero-illustration" aria-hidden="true">
+                <div class="hero-graphic">
+                    <svg viewBox="0 0 400 400" fill="none" class="hero-svg-mic">
+                        <defs>
+                            <linearGradient id="gradMic" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#3b82f6"/>
+                                <stop offset="33%" stop-color="#8b5cf6"/>
+                                <stop offset="66%" stop-color="#ec4899"/>
+                                <stop offset="100%" stop-color="#f97316"/>
+                            </linearGradient>
+                            <filter id="glowGlow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="8" result="blur" />
+                                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                            </filter>
+                        </defs>
+                        <circle cx="200" cy="200" r="160" stroke="url(#gradMic)" stroke-width="2" opacity="0.2" class="pulse-circle-1" />
+                        <circle cx="200" cy="200" r="120" stroke="url(#gradMic)" stroke-width="4" opacity="0.4" class="pulse-circle-2" />
+                        <circle cx="200" cy="200" r="80" fill="url(#gradMic)" opacity="0.1" />
+                        
+                        <!-- Floating Decorative Icons -->
+                        <g class="float-icon-1" transform="translate(70, 100)" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18V5l12-2v13" />
+                            <circle cx="6" cy="18" r="3" fill="rgba(255,255,255,0.4)" />
+                            <circle cx="18" cy="16" r="3" fill="rgba(255,255,255,0.4)" />
+                        </g>
+                        <g class="float-icon-2" transform="translate(320, 140)" stroke="rgba(139,92,246,0.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 12h4l4 -8 4 16 4 -8h4" />
+                        </g>
+                        <g class="float-icon-3" transform="translate(90, 260)" stroke="rgba(236,72,153,0.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18V5l12-2v13" />
+                            <circle cx="6" cy="18" r="3" fill="rgba(236,72,153,0.5)" />
+                            <circle cx="18" cy="16" r="3" fill="rgba(236,72,153,0.5)" />
+                        </g>
+
+                        <!-- Mic SVG -->
+                        <g transform="translate(170, 160)" stroke="url(#gradMic)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" filter="url(#glowGlow)">
+                            <rect x="15" y="0" width="30" height="50" rx="15" />
+                            <path d="M5 30 Q5 65 30 65 Q55 65 55 30" />
+                            <line x1="30" y1="65" x2="30" y2="85" />
+                            <line x1="15" y1="85" x2="45" y2="85" />
+                        </g>
+                    </svg>
                 </div>
             </div>
+        </div>
+    </div>
+    
+    <!-- Audio visualizer bars across bottom of hero -->
+    <div class="hero-bottom-visualizer" aria-hidden="true">
+        <div class="container viz-container">
+            <?php for ($i = 0; $i < 30; $i++): ?>
+                <div class="viz-bar-bottom" style="--delay: <?= rand(0, 15) / 10 ?>s; --h: <?= rand(10, 60) ?>px"></div>
+            <?php endfor; ?>
         </div>
     </div>
 </section>
 
 <!-- Episodes Section -->
-<section class="container" style="padding: 60px 24px;">
+<section id="latest-episodes" class="container" style="padding: 60px 24px;">
     <div class="content-layout">
         <div class="content-main">
             <div class="section-header">

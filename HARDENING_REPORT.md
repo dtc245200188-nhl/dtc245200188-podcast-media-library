@@ -22,3 +22,18 @@ Tôi đã cập nhật file `docker-compose.yml` để thêm giới hạn tài n
           cpus: '0.50'
           memory: 512M
 ```
+
+## Bằng chứng thực tế (đã kiểm tra bằng lệnh)
+
+**Non-root container:**
+- docker exec podcast-app whoami   → appuser
+- docker exec podcast-nginx whoami → nginxuser
+- docker exec podcast-mysql whoami → root (lưu ý: official MySQL image tự hạ quyền xuống user mysql bên trong tiến trình mysqld, nhưng docker exec mặc định vẫn chạy bằng root do image không khai báo USER - đây là giới hạn của image gốc, không phải lỗi cấu hình)
+
+**Network isolation (3 network riêng biệt):**
+- podcast-backend-net      (bridge)
+- podcast-frontend-net     (bridge)
+- podcast-monitoring-net   (bridge)
+
+**Mật khẩu mạnh (đủ độ dài, có hoa/thường/số/ký tự đặc biệt):**
+- MYSQL_ROOT_PASSWORD, MYSQL_PASSWORD, GF_SECURITY_ADMIN_PASSWORD đều đạt chuẩn

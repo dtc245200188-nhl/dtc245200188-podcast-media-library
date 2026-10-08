@@ -98,3 +98,15 @@ INSERT INTO episodes (title, slug, description, category_id, duration, published
 ('Quản lý tài chính cá nhân cho GenZ', 'quan-ly-tai-chinh-genz',
  'Hướng dẫn quản lý tài chính, tiết kiệm và đầu tư thông minh cho thế hệ GenZ. Từ budgeting cơ bản đến xây dựng portfolio đầu tư đầu tiên.',
  2, '44:00', '2025-09-15');
+
+-- Set real cover images for episodes with uploaded photos
+UPDATE episodes SET cover_image = '/uploads/covers/quan-ly-tai-chinh-genz.jpg' WHERE slug = 'quan-ly-tai-chinh-genz';
+UPDATE episodes SET cover_image = '/uploads/covers/web3-blockchain-hype-hay-revolution.jpg' WHERE slug = 'web3-blockchain-hype-hay-revolution';
+UPDATE episodes SET cover_image = '/uploads/covers/hoc-lap-trinh-2025.jpg' WHERE slug = 'hoc-lap-trinh-2025';
+UPDATE episodes SET cover_image = '/uploads/covers/mindfulness-thien-dinh.jpg' WHERE slug = 'mindfulness-thien-dinh';
+UPDATE episodes SET cover_image = '/uploads/covers/bien-doi-khi-hau.jpg' WHERE slug = 'bien-doi-khi-hau';
+UPDATE episodes SET cover_image = '/uploads/covers/bi-an-cua-vu-tru.jpg' WHERE slug = 'bi-an-cua-vu-tru';
+UPDATE episodes SET cover_image = '/uploads/covers/marketing-so-thoi-dai-moi.jpg' WHERE slug = 'marketing-so-thoi-dai-moi';
+UPDATE episodes SET cover_image = '/uploads/covers/khoi-nghiep-tu-so-0.jpg' WHERE slug = 'khoi-nghiep-tu-so-0';
+UPDATE episodes SET cover_image = '/uploads/covers/docker-kubernetes-nguoi-moi.jpg' WHERE slug = 'docker-kubernetes-nguoi-moi';
+UPDATE episodes SET cover_image = '/uploads/covers/tuong-lai-cua-ai-2025.jpg' WHERE slug = 'tuong-lai-cua-ai-2025';

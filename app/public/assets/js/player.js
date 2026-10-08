@@ -16,15 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainNav = document.getElementById('main-nav');
     if (mobileToggle && mainNav) {
         mobileToggle.addEventListener('click', () => {
-            mainNav.style.display = mainNav.style.display === 'flex' ? 'none' : 'flex';
-            mainNav.style.position = 'absolute';
-            mainNav.style.top = '100%';
-            mainNav.style.left = '0';
-            mainNav.style.right = '0';
-            mainNav.style.background = 'var(--bg-secondary)';
-            mainNav.style.flexDirection = 'column';
-            mainNav.style.padding = '16px';
-            mainNav.style.borderBottom = '1px solid var(--border-color)';
+            mainNav.classList.toggle('show-mobile');
         });
     }
 
@@ -76,6 +68,8 @@ function initAudioPlayer() {
     const currentTimeEl = document.getElementById('current-time');
     const durationEl = document.getElementById('duration-time');
     const volumeSlider = document.getElementById('volume-slider');
+    const skipBackBtn = document.getElementById('skip-back');
+    const skipForwardBtn = document.getElementById('skip-forward');
 
     if (!audioElement || !playBtn) return;
 
@@ -94,13 +88,32 @@ function initAudioPlayer() {
 
     audioElement.addEventListener('play', () => {
         isPlaying = true;
-        playBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`;
+        const iconPlay = playBtn.querySelector('.icon-play');
+        const iconPause = playBtn.querySelector('.icon-pause');
+        if (iconPlay) iconPlay.style.display = 'none';
+        if (iconPause) iconPause.style.display = 'block';
     });
 
     audioElement.addEventListener('pause', () => {
         isPlaying = false;
-        playBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`;
+        const iconPlay = playBtn.querySelector('.icon-play');
+        const iconPause = playBtn.querySelector('.icon-pause');
+        if (iconPlay) iconPlay.style.display = 'block';
+        if (iconPause) iconPause.style.display = 'none';
     });
+
+    // Skip Buttons
+    if (skipBackBtn) {
+        skipBackBtn.addEventListener('click', () => {
+            audioElement.currentTime = Math.max(0, audioElement.currentTime - 10);
+        });
+    }
+
+    if (skipForwardBtn) {
+        skipForwardBtn.addEventListener('click', () => {
+            audioElement.currentTime = Math.min(audioElement.duration || 0, audioElement.currentTime + 10);
+        });
+    }
 
     // Progress bar
     audioElement.addEventListener('timeupdate', () => {
