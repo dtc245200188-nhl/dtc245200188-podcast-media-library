@@ -82,43 +82,43 @@ INSERT INTO categories (name, slug, description) VALUES
 INSERT INTO episodes (title, slug, description, category_id, duration, published_at) VALUES
 ('Tương lai của AI trong 2025', 'tuong-lai-cua-ai-2025',
  'Khám phá những xu hướng AI mới nhất và tác động của chúng đến cuộc sống hàng ngày. Từ ChatGPT đến các mô hình ngôn ngữ lớn, chúng ta sẽ thảo luận về tương lai của trí tuệ nhân tạo và cách nó đang thay đổi mọi ngành nghề.',
- 1, '45:30', '2026-11-15'),
+ 1, '45:30', '2025-01-15'),
 
 ('Docker và Kubernetes cho người mới bắt đầu', 'docker-kubernetes-nguoi-moi',
  'Hướng dẫn cơ bản về containerization với Docker và orchestration với Kubernetes. Từ việc viết Dockerfile đầu tiên đến deploy ứng dụng trên K8s cluster, bắt đầu hành trình DevOps của bạn.',
- 1, '38:15', '2026-11-15'),
+ 1, '38:15', '2025-02-20'),
 
 ('Khởi nghiệp từ số 0 - Bài học thực tế', 'khoi-nghiep-tu-so-0',
  'Chia sẻ kinh nghiệm xây dựng startup từ con số 0 với những bài học xương máu. Founder của nhiều startup thành công tại Việt Nam chia sẻ về gọi vốn, xây dựng team, và vượt qua thất bại.',
- 2, '52:00', '2026-11-15'),
+ 2, '52:00', '2025-03-10'),
 
 ('Marketing số thời đại mới', 'marketing-so-thoi-dai-moi',
  'Chiến lược marketing digital hiệu quả trong năm 2025. Từ social media marketing, content marketing, đến SEO và paid advertising - những trend mới nhất và cách áp dụng cho doanh nghiệp Việt.',
- 2, '41:45', '2026-11-15'),
+ 2, '41:45', '2025-04-05'),
 
 ('Bí ẩn của vũ trụ - Hố đen và Vật chất tối', 'bi-an-cua-vu-tru',
  'Khám phá những bí ẩn chưa được giải đáp của vũ trụ bao la. Từ hố đen siêu khối lượng đến vật chất tối bí ẩn, hành trình tìm hiểu cosmos cùng các nhà khoa học hàng đầu Việt Nam.',
- 3, '55:20', '2026-11-15'),
+ 3, '55:20', '2025-05-12'),
 
 ('Biến đổi khí hậu - Thực trạng và giải pháp', 'bien-doi-khi-hau',
  'Phân tích tình trạng biến đổi khí hậu hiện tại và các giải pháp tiềm năng. Vai trò của công nghệ xanh, năng lượng tái tạo trong cuộc chiến chống biến đổi khí hậu toàn cầu.',
- 3, '48:10', '2026-11-15'),
+ 3, '48:10', '2025-06-18'),
 
 ('Mindfulness - Thiền định trong thời đại số', 'mindfulness-thien-dinh',
  'Hướng dẫn thực hành thiền định và mindfulness cho người bận rộn. Cách giảm stress, tăng tập trung và cải thiện sức khỏe tinh thần trong cuộc sống hiện đại đầy áp lực.',
- 4, '35:45', '2026-11-15'),
+ 4, '35:45', '2025-07-22'),
 
 ('Học lập trình từ đâu trong 2025?', 'hoc-lap-trinh-2025',
  'Hướng dẫn lộ trình học lập trình hiệu quả cho người mới bắt đầu trong năm 2025. So sánh các ngôn ngữ, framework phổ biến và lời khuyên từ các developer senior.',
- 5, '42:30', '2026-11-15'),
+ 5, '42:30', '2025-08-14'),
 
 ('Web3 và Blockchain - Hype hay Revolution?', 'web3-blockchain-hype-hay-revolution',
  'Phân tích khách quan về Web3, blockchain, NFT và DeFi. Đâu là tiềm năng thực sự và đâu chỉ là hype? Góc nhìn từ cả developer lẫn nhà đầu tư.',
- 1, '50:15', '2026-11-15'),
+ 1, '50:15', '2025-09-01'),
 
 ('Quản lý tài chính cá nhân cho GenZ', 'quan-ly-tai-chinh-genz',
  'Hướng dẫn quản lý tài chính, tiết kiệm và đầu tư thông minh cho thế hệ GenZ. Từ budgeting cơ bản đến xây dựng portfolio đầu tư đầu tiên.',
- 2, '44:00', '2026-11-15');
+ 2, '44:00', '2025-09-15');
 
 -- Set real cover images for episodes with uploaded photos
 UPDATE episodes SET cover_image = '/uploads/covers/quan-ly-tai-chinh-genz.jpg' WHERE slug = 'quan-ly-tai-chinh-genz';
