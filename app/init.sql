@@ -11,6 +11,10 @@ SET CHARACTER SET utf8mb4;
 -- Exporter user for monitoring
 CREATE USER IF NOT EXISTS 'exporter_user'@'%' IDENTIFIED BY 'matkhaumanh';
 GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'exporter_user'@'%';
+
+-- Admin user for phpMyAdmin
+CREATE USER IF NOT EXISTS 'admin'@'%' IDENTIFIED BY 'admin123';
+GRANT ALL PRIVILEGES ON *.* TO 'admin'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 
 -- Categories table
@@ -47,6 +51,11 @@ CREATE TABLE IF NOT EXISTS admin_users (
     password_hash VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Default admin user (admin / admin123)
+INSERT INTO admin_users (username, password_hash) 
+VALUES ('admin', '$2y$10$deK4MN5/fAhKEjPQSrDtBOifntduUbRNBmKONAnTuppfUFAKO7TKy')
+ON DUPLICATE KEY UPDATE username=username;
 
 -- Users table (frontend user accounts)
 CREATE TABLE IF NOT EXISTS users (

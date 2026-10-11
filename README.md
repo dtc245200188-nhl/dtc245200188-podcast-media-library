@@ -42,13 +42,14 @@ docker compose up -d --build
 ## 3. Danh sách Port và URL truy cập
 Sau khi hệ thống khởi động thành công (các container ở trạng thái `Up`), bạn có thể truy cập qua các địa chỉ sau:
 
-| Dịch vụ | Port (Host) | URL Truy cập | Ghi chú |
+| Dịch vụ | Port (Host) | URL Truy cập | Tài khoản / Mật khẩu |
 | :--- | :--- | :--- | :--- |
-| **Web Podcast** | 8888 (HTTP) | `http://localhost:8888` | Sẽ tự động redirect sang HTTPS (8889) |
-| **Web Podcast (SSL)** | 8889 (HTTPS)| `https://localhost:8889` | Chấp nhận cảnh báo chứng chỉ Self-signed |
-| **phpMyAdmin** | N/A | `https://localhost:8889/phpmyadmin/` | Qua Nginx Proxy, đăng nhập: root / pass trong .env |
-| **Grafana** | 3000 | `http://localhost:3000` | Tài khoản mặc định: `admin` / `admin` |
-| **Prometheus** | (Không map) | Truy cập qua Grafana Datasource | Backend service |
+| **Web Podcast** | 8888 (HTTP) | `http://localhost:8888` | Tự động redirect 301 sang HTTPS |
+| **Web Podcast (SSL)** | 8889 (HTTPS)| `https://localhost:8889` | Chấp nhận cảnh báo SSL Self-signed |
+| **Admin Web Panel** | 8889 (HTTPS)| `https://localhost:8889/admin/` | `admin` / `admin123` |
+| **phpMyAdmin** | 8889 (HTTPS)| `https://localhost:8889/phpmyadmin/` | `admin` / `admin123` *(hoặc root)* |
+| **Grafana** | 3000 | `http://localhost:3000` | `admin` / `admin123` |
+| **Prometheus** | (Nội bộ) | Truy cập qua Grafana Datasource | Backend service |
 | **Loki** | 3100 | Truy cập qua Grafana Explore | Cổng API 3100 |
 
 ## 4. Hướng dẫn xem Log tập trung

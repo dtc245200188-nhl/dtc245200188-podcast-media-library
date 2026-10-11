@@ -33,3 +33,21 @@ vendor/
 
 # Database backups
 backup_before_fix.sql
+db_backup_*.sql
+final_fix.sql
+update*.sql
+
+# Python/PHP maintenance scripts
+generate_*.py
+fix_*.py
+verify_*.py
+print_details.py
+*.mp3
+scripts/
+app/fix_encoding.php
+app/generate_audios.php
+app/assign_audios.php
+
+# Word lock files
+~$*
+~WRL*.tmp
