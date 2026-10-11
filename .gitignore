@@ -42,11 +42,17 @@ generate_*.py
 fix_*.py
 verify_*.py
 print_details.py
+edit.py
 *.mp3
 scripts/
 app/fix_encoding.php
 app/generate_audios.php
 app/assign_audios.php
+app/generate_covers.php
+
+# Temp and drafts
+temp.txt
+Bao_cao_Trien_khai_De_tai_37.md
 
 # Word lock files
 ~$*
