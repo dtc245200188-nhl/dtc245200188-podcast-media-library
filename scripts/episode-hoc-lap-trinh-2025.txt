@@ -1,0 +1,15 @@
+Xin chào các bạn thính giả đam mê công nghệ. Chào mừng quay trở lại với PodcastHub. Chủ đề hôm nay chắc chắn sẽ rất hữu ích cho những ai đang muốn bước chân vào ngành IT: Học lập trình từ đâu trong năm 2025?
+
+Thế giới lập trình luôn vận động và thay đổi không ngừng. Nếu như cách đây vài năm, việc học code chỉ xoay quanh việc thuộc cú pháp, thì năm 2025, với sự hỗ trợ mạnh mẽ của trí tuệ nhân tạo như GitHub Copilot hay ChatGPT, cách chúng ta học và làm việc đã hoàn toàn khác. 
+
+Câu hỏi đầu tiên và quan trọng nhất: Nên bắt đầu học ngôn ngữ nào? Câu trả lời phụ thuộc vào mục tiêu của bạn. 
+
+Nếu bạn muốn trở thành Web Developer, phát triển các trang web và ứng dụng trên trình duyệt, thì JavaScript vẫn là vị vua không thể lật đổ. Hãy bắt đầu với nền tảng HTML, CSS, sau đó đào sâu vào JavaScript. Tiếp theo, hãy làm quen với các framework hiện đại như React hay Vue.js. 
+
+Nếu bạn đam mê Phân tích dữ liệu, Trí tuệ nhân tạo hoặc muốn làm Backend, Python là sự lựa chọn số một. Cú pháp của Python rất trong sáng, dễ đọc và dễ học đối với người mới. Hơn nữa, hệ sinh thái thư viện của Python cho dữ liệu và Trí tuệ nhân tạo là vô đối.
+
+Nếu bạn muốn tạo ra các ứng dụng di động, hãy tìm hiểu về Flutter hoặc React Native. Đây là những công nghệ cho phép bạn viết code một lần mà có thể chạy được trên cả iOS và Android.
+
+Một lời khuyên quan trọng từ các senior developer trong năm 2025: Đừng học vẹt cú pháp. Công nghệ có thể viết code tốt hơn và nhanh hơn bạn. Thay vào đó, hãy rèn luyện tư duy logic, kỹ năng phân tích vấn đề và thiết kế hệ thống. Hãy hiểu rõ CÁCH mọi thứ hoạt động bên dưới, thay vì chỉ biết dùng framework một cách máy móc.
+
+Cuối cùng, học lập trình là một cuộc đua marathon, không phải chạy nước rút. Hãy giữ vững sự kiên trì, liên tục làm các dự án thực tế và đừng ngại hỏi khi gặp khó khăn. Cộng đồng lập trình viên luôn sẵn sàng giúp đỡ bạn. Chúc các bạn có một khởi đầu suôn sẻ và thành công trên con đường trở thành những kỹ sư phần mềm xuất sắc. Xin chào và hẹn gặp lại!

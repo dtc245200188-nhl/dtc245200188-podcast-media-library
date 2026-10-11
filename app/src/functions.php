@@ -272,6 +272,9 @@ function renderHeader(string $title = 'PodcastHub', string $activePage = 'home')
             $categories = [];
         }
     }
+    // Load user auth functions
+    require_once __DIR__ . '/auth.php';
+    $currentUser = getCurrentUser();
     ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -280,10 +283,12 @@ function renderHeader(string $title = 'PodcastHub', string $activePage = 'home')
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="PodcastHub - Thư viện podcast Việt Nam với hàng trăm tập podcast chất lượng cao về công nghệ, kinh doanh, khoa học và nhiều lĩnh vực khác.">
     <title><?= e($title) ?> | PodcastHub</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="/assets/css/auth.css?v=<?= time() ?>">
 </head>
 <body>
     <!-- Header -->
@@ -320,6 +325,40 @@ function renderHeader(string $title = 'PodcastHub', string $activePage = 'home')
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
                 </a>
+
+                <?php if ($currentUser): ?>
+                    <!-- User Menu (logged in) -->
+                    <div class="user-menu-wrapper" id="user-menu">
+                        <button class="user-menu-trigger" id="user-menu-trigger">
+                            <span class="user-avatar-small"><?= strtoupper(mb_substr($currentUser['fullname'], 0, 1, 'UTF-8')) ?></span>
+                            <span class="user-menu-name"><?= e($currentUser['fullname']) ?></span>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="user-menu-chevron"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                        <div class="user-dropdown" id="user-dropdown">
+                            <div class="user-dropdown-header">
+                                <strong><?= e($currentUser['fullname']) ?></strong>
+                                <span><?= e($currentUser['email']) ?></span>
+                            </div>
+                            <a href="/logout.php" class="user-dropdown-item danger">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                                Đăng xuất
+                            </a>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <!-- Auth Buttons (not logged in) -->
+                    <div class="auth-header-btns">
+                        <a href="/login.php" class="btn-auth-login">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                            <span>Đăng nhập</span>
+                        </a>
+                        <a href="/register.php" class="btn-auth-register">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+                            <span>Đăng ký</span>
+                        </a>
+                    </div>
+                <?php endif; ?>
+
                 <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Menu">
                     <span></span><span></span><span></span>
                 </button>
@@ -353,11 +392,12 @@ function renderFooter(): void {
                     <h4>Liên kết</h4>
                     <a href="/">Trang chủ</a>
                     <a href="/search.php">Tìm kiếm</a>
-                    <a href="/admin/login.php">Admin</a>
                 </div>
                 <div class="footer-links">
-                    <h4>Hệ thống</h4>
-                    <a href="/phpmyadmin/" target="_blank">phpMyAdmin</a>
+                    <h4>Quản trị & Hệ thống</h4>
+                    <a href="/admin/">Trang quản trị</a>
+                    <a href="/phpmyadmin/" target="_blank" rel="noopener">phpMyAdmin</a>
+                    <a href="http://localhost:3000" target="_blank" rel="noopener">Grafana Dashboard</a>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -366,7 +406,64 @@ function renderFooter(): void {
         </div>
     </footer>
 
-    <script src="/assets/js/player.js"></script>
+    <!-- Global Sticky Bottom Audio Player -->
+    <div id="sticky-player" class="sticky-player" style="display:none;">
+        <div class="container sticky-player-inner">
+            <div class="sticky-track-info">
+                <img id="sticky-cover" src="" alt="Cover" class="sticky-cover-img" style="display:none;">
+                <div id="sticky-placeholder" class="sticky-cover-placeholder">🎙️</div>
+                <div class="sticky-meta">
+                    <span id="sticky-cat" class="sticky-cat-name">Podcast</span>
+                    <a id="sticky-title" href="#" class="sticky-title-text">Đang phát tập podcast...</a>
+                </div>
+                <button type="button" id="sticky-fav-btn" class="sticky-fav-btn" title="Yêu thích" aria-label="Yêu thích">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                </button>
+            </div>
+
+            <div class="sticky-controls">
+                <div class="sticky-buttons">
+                    <button type="button" class="sticky-skip-btn" id="sticky-skip-back" title="Lùi 10s">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                        <span>10</span>
+                    </button>
+                    <button type="button" class="sticky-play-btn" id="sticky-play-toggle" aria-label="Phát/Tạm dừng">
+                        <svg class="sticky-icon-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        <svg class="sticky-icon-pause" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                    </button>
+                    <button type="button" class="sticky-skip-btn" id="sticky-skip-forward" title="Tua 10s">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                        <span>10</span>
+                    </button>
+                </div>
+                <div class="sticky-progress-row">
+                    <span id="sticky-time-current" class="sticky-time">00:00</span>
+                    <div id="sticky-progress-bar-container" class="sticky-progress-container">
+                        <div id="sticky-progress-bar" class="sticky-progress-fill"></div>
+                    </div>
+                    <span id="sticky-time-duration" class="sticky-time">--:--</span>
+                </div>
+            </div>
+
+            <div class="sticky-extra">
+                <div class="sticky-volume-box">
+                    <button type="button" id="sticky-volume-icon" class="sticky-vol-btn" aria-label="Âm lượng">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+                    </button>
+                    <input type="range" id="sticky-volume-slider" min="0" max="100" value="80" class="sticky-vol-slider" aria-label="Chỉnh âm lượng">
+                </div>
+                <button type="button" id="sticky-close-btn" class="sticky-close-btn" title="Đóng player" aria-label="Đóng">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+        </div>
+        <audio id="global-audio-element" preload="none"></audio>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="podcast-toast" class="podcast-toast" aria-live="polite"></div>
+
+    <script src="/assets/js/player.js?v=<?= time() ?>"></script>
 </body>
 </html>
     <?php
@@ -444,6 +541,21 @@ function renderAdminHeader(string $title = 'Dashboard', string $activePage = 'da
                     <a href="/admin/episodes.php" class="<?= $activePage === 'episodes' ? 'active' : '' ?>">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
                         Tập Podcast
+                    </a>
+                </li>
+                <li style="margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-color); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 600; padding-left: 12px;">
+                    Hệ thống
+                </li>
+                <li>
+                    <a href="/phpmyadmin/" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                        phpMyAdmin ↗
+                    </a>
+                </li>
+                <li>
+                    <a href="http://localhost:3000" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                        Grafana ↗
                     </a>
                 </li>
             </ul>

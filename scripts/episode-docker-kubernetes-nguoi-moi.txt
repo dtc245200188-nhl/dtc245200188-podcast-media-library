@@ -1,0 +1,11 @@
+Xin chào các bạn thính giả của PodcastHub. Trong tập hôm nay, chúng ta sẽ bước vào thế giới của DevOps với hai công nghệ cốt lõi: Docker và Kubernetes, dành riêng cho những bạn mới bắt đầu.
+
+Nếu bạn là một lập trình viên, chắc hẳn bạn đã từng gặp tình huống: "Code chạy ngon lành trên máy mình, nhưng lại lỗi tưng bừng trên server". Đó là lúc Docker xuất hiện như một vị cứu tinh. Docker cho phép bạn đóng gói toàn bộ ứng dụng, cùng với tất cả các thư viện và môi trường cần thiết, vào một hộp chứa gọi là Container. Bạn có thể mang chiếc hộp này đi bất cứ đâu, từ máy Mac, Windows đến Linux server, mà ứng dụng vẫn chạy y hệt như cũ. 
+
+Để bắt đầu với Docker, bạn chỉ cần học cách viết một file có tên là Dockerfile. Trong đó, bạn khai báo hệ điều hành gốc, copy code vào, cài đặt thư viện và định nghĩa lệnh khởi chạy. Chỉ với vài dòng lệnh đơn giản, bạn đã tạo ra được một Docker Image và sẵn sàng biến nó thành Container.
+
+Tuy nhiên, khi ứng dụng của bạn lớn lên, bạn không chỉ chạy một hay hai Container, mà có thể là hàng trăm, hàng nghìn Container cùng lúc. Làm sao để quản lý chúng? Làm sao để tự động khởi động lại một Container bị sập? Đó là lúc Kubernetes, hay còn gọi là K8s, ra tay.
+
+Kubernetes là một hệ thống điều phối Container. Nó giống như một người nhạc trưởng, chỉ huy một dàn nhạc giao hưởng gồm vô số Container. Bạn chỉ cần nói với Kubernetes rằng: "Tôi muốn ứng dụng này luôn có 3 bản sao đang chạy". Kubernetes sẽ tự động sắp xếp, phân bổ tài nguyên, và đảm bảo yêu cầu của bạn luôn được đáp ứng, kể cả khi có một server vật lý bị hỏng.
+
+Tất nhiên, Kubernetes khá phức tạp và có một đường cong học tập khá dốc. Nhưng đừng nản lòng. Hãy bắt đầu từ việc thành thạo Docker, sau đó làm quen với các khái niệm cơ bản của K8s như Pod, Service, và Deployment. Chúc các bạn có một hành trình DevOps thú vị và thành công. Hẹn gặp lại trong các tập tiếp theo!

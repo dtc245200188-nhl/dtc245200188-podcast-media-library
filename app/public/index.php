@@ -10,6 +10,7 @@ $result = getEpisodes($pdo, $page, 9);
 $categories = getCategories($pdo);
 $totalEpisodes = getTotalEpisodes($pdo);
 $totalCategories = getTotalCategories($pdo);
+$latestEpisodes = $pdo->query("SELECT e.*, c.name as category_name, c.slug as category_slug FROM episodes e LEFT JOIN categories c ON e.category_id = c.id ORDER BY e.published_at DESC, e.id DESC LIMIT 3")->fetchAll();
 
 renderHeader('Trang chủ', 'home');
 ?>
@@ -148,7 +149,25 @@ renderHeader('Trang chủ', 'home');
                                 <?php else: ?>
                                     <div class="card-cover-placeholder">🎙️</div>
                                 <?php endif; ?>
-                                <a href="/episode.php?slug=<?= e($episode['slug']) ?>" class="card-play-btn" aria-label="Nghe">
+                                
+                                <button type="button" 
+                                        class="card-fav-btn" 
+                                        data-slug="<?= e($episode['slug']) ?>" 
+                                        data-title="<?= e($episode['title']) ?>" 
+                                        title="Lưu vào yêu thích" 
+                                        aria-label="Yêu thích">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                </button>
+
+                                <a href="/episode.php?slug=<?= e($episode['slug']) ?>" 
+                                   class="card-play-btn" 
+                                   aria-label="Nghe"
+                                   data-play-trigger
+                                   data-audio="<?= e($episode['audio_file']) ?>"
+                                   data-title="<?= e($episode['title']) ?>"
+                                   data-slug="<?= e($episode['slug']) ?>"
+                                   data-cat="<?= e($episode['category_name']) ?>"
+                                   data-cover="<?= e($episode['cover_image']) ?>">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                                 </a>
                             </div>
@@ -185,6 +204,7 @@ renderHeader('Trang chủ', 'home');
 
         <!-- Sidebar -->
         <aside class="sidebar">
+            <!-- Widget 1: Categories -->
             <div class="sidebar-widget">
                 <h3 class="widget-title">📂 Danh mục</h3>
                 <ul class="category-list">
@@ -199,11 +219,59 @@ renderHeader('Trang chủ', 'home');
                 </ul>
             </div>
 
+            <!-- Widget 2: Latest Episodes -->
             <div class="sidebar-widget">
-                <h3 class="widget-title">🔍 Tìm kiếm</h3>
-                <form action="/search.php" method="GET">
-                    <input type="text" name="q" class="form-control" placeholder="Tìm tập podcast..." aria-label="Tìm kiếm">
-                </form>
+                <h3 class="widget-title">🎧 Tập mới nhất</h3>
+                <div class="trending-list">
+                    <?php foreach ($latestEpisodes as $latest): ?>
+                        <a href="/episode.php?slug=<?= e($latest['slug']) ?>" 
+                           class="trending-item"
+                           data-play-trigger
+                           data-audio="<?= e($latest['audio_file']) ?>"
+                           data-title="<?= e($latest['title']) ?>"
+                           data-slug="<?= e($latest['slug']) ?>"
+                           data-cat="<?= e($latest['category_name']) ?>"
+                           data-cover="<?= e($latest['cover_image']) ?>">
+                            <div class="trending-thumb-box">
+                                <?php if ($latest['cover_image']): ?>
+                                    <img src="<?= e($latest['cover_image']) ?>" alt="<?= e($latest['title']) ?>" class="trending-thumb-img" loading="lazy">
+                                <?php else: ?>
+                                    <div class="trending-thumb-img" style="background:var(--gradient-primary);display:flex;align-items:center;justify-content:center;">🎙️</div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="trending-info">
+                                <div class="trending-title"><?= e($latest['title']) ?></div>
+                                <div class="trending-meta">
+                                    <span><?= e($latest['category_name']) ?></span>
+                                    <span>•</span>
+                                    <span>⏱️ <?= e(formatDuration($latest['duration'])) ?></span>
+                                </div>
+                            </div>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+
+            <!-- Widget 3: About & Highlights -->
+            <div class="sidebar-widget about-widget">
+                <h3 class="widget-title" style="margin-bottom: 8px;">✨ Về PodcastHub</h3>
+                <p class="about-desc">
+                    Nền tảng âm thanh học tập và giải trí số với kho podcast chọn lọc chất lượng cao.
+                </p>
+                <div class="about-badges">
+                    <div class="about-badge-item">
+                        <span class="icon">🎙️</span>
+                        <span><?= (int)$totalEpisodes ?> Tập podcast</span>
+                    </div>
+                    <div class="about-badge-item">
+                        <span class="icon">📁</span>
+                        <span><?= (int)$totalCategories ?> Chủ đề danh mục</span>
+                    </div>
+                    <div class="about-badge-item">
+                        <span class="icon">⚡</span>
+                        <span>100% Miễn phí & Không quảng cáo</span>
+                    </div>
+                </div>
             </div>
         </aside>
     </div>

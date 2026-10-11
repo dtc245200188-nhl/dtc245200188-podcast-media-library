@@ -23,6 +23,8 @@ if (!$category) {
 $page = max(1, (int)($_GET['page'] ?? 1));
 $result = getEpisodes($pdo, $page, 9, $category['id']);
 $categories = getCategories($pdo);
+$totalEpisodes = getTotalEpisodes($pdo);
+$totalCategories = getTotalCategories($pdo);
 
 renderHeader($category['name'], 'category');
 ?>
@@ -78,7 +80,25 @@ renderHeader($category['name'], 'category');
                                 <?php else: ?>
                                     <div class="card-cover-placeholder">🎙️</div>
                                 <?php endif; ?>
-                                <a href="/episode.php?slug=<?= e($episode['slug']) ?>" class="card-play-btn" aria-label="Nghe">
+
+                                <button type="button" 
+                                        class="card-fav-btn" 
+                                        data-slug="<?= e($episode['slug']) ?>" 
+                                        data-title="<?= e($episode['title']) ?>" 
+                                        title="Lưu vào yêu thích" 
+                                        aria-label="Yêu thích">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                </button>
+
+                                <a href="/episode.php?slug=<?= e($episode['slug']) ?>" 
+                                   class="card-play-btn" 
+                                   aria-label="Nghe"
+                                   data-play-trigger
+                                   data-audio="<?= e($episode['audio_file']) ?>"
+                                   data-title="<?= e($episode['title']) ?>"
+                                   data-slug="<?= e($episode['slug']) ?>"
+                                   data-cat="<?= e($category['name']) ?>"
+                                   data-cover="<?= e($episode['cover_image']) ?>">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                                 </a>
                             </div>
@@ -120,6 +140,28 @@ renderHeader($category['name'], 'category');
                         </li>
                     <?php endforeach; ?>
                 </ul>
+            </div>
+
+            <!-- Widget 2: About & Highlights -->
+            <div class="sidebar-widget about-widget">
+                <h3 class="widget-title" style="margin-bottom: 8px;">✨ Về PodcastHub</h3>
+                <p class="about-desc">
+                    Nền tảng âm thanh học tập và giải trí số với kho podcast chọn lọc chất lượng cao.
+                </p>
+                <div class="about-badges">
+                    <div class="about-badge-item">
+                        <span class="icon">🎙️</span>
+                        <span><?= (int)$totalEpisodes ?> Tập podcast</span>
+                    </div>
+                    <div class="about-badge-item">
+                        <span class="icon">📁</span>
+                        <span><?= (int)$totalCategories ?> Chủ đề danh mục</span>
+                    </div>
+                    <div class="about-badge-item">
+                        <span class="icon">⚡</span>
+                        <span>100% Miễn phí & Không quảng cáo</span>
+                    </div>
+                </div>
             </div>
         </aside>
     </div>

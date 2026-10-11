@@ -1,0 +1,11 @@
+SET NAMES utf8mb4;
+UPDATE episodes SET audio_file = '/uploads/audio/bien-doi-khi-hau.mp3', duration = '01:28' WHERE slug = 'bien-doi-khi-hau';
+UPDATE episodes SET audio_file = '/uploads/audio/mindfulness-thien-dinh.mp3', duration = '01:19' WHERE slug = 'mindfulness-thien-dinh';
+UPDATE episodes SET audio_file = '/uploads/audio/hoc-lap-trinh-2025.mp3', duration = '01:49' WHERE slug = 'hoc-lap-trinh-2025';
+UPDATE episodes SET audio_file = '/uploads/audio/web3-blockchain-hype-hay-revolution.mp3', duration = '01:42' WHERE slug = 'web3-blockchain-hype-hay-revolution';
+UPDATE episodes SET audio_file = '/uploads/audio/quan-ly-tai-chinh-genz.mp3', duration = '01:49' WHERE slug = 'quan-ly-tai-chinh-genz';
+UPDATE episodes SET audio_file = '/uploads/audio/tuong-lai-cua-ai-2025.mp3', duration = '01:52' WHERE slug = 'tuong-lai-cua-ai-2025';
+UPDATE episodes SET audio_file = '/uploads/audio/docker-kubernetes-nguoi-moi.mp3', duration = '02:03' WHERE slug = 'docker-kubernetes-nguoi-moi';
+UPDATE episodes SET audio_file = '/uploads/audio/khoi-nghiep-tu-so-0.mp3', duration = '01:55' WHERE slug = 'khoi-nghiep-tu-so-0';
+UPDATE episodes SET audio_file = '/uploads/audio/marketing-so-thoi-dai-moi.mp3', duration = '02:11' WHERE slug = 'marketing-so-thoi-dai-moi';
+UPDATE episodes SET audio_file = '/uploads/audio/bi-an-cua-vu-tru.mp3', duration = '02:09' WHERE slug = 'bi-an-cua-vu-tru';

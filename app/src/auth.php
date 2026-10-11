@@ -84,3 +84,52 @@ function verifyCsrfToken(string $token): bool {
 function csrfField(): string {
     return '<input type="hidden" name="csrf_token" value="' . e(generateCsrfToken()) . '">';
 }
+
+/* ============================================= 
+ * User Authentication (separate from admin)
+ * ============================================= */
+
+/**
+ * Check if a regular user is logged in
+ */
+function isUserLoggedIn(): bool {
+    return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
+}
+
+/**
+ * Attempt to log in a regular user with email + password
+ */
+function attemptUserLogin(PDO $pdo, string $email, string $password): bool {
+    $stmt = $pdo->prepare("SELECT id, fullname, email, password_hash FROM users WHERE email = ?");
+    $stmt->execute([$email]);
+    $user = $stmt->fetch();
+
+    if ($user && password_verify($password, $user['password_hash'])) {
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user_fullname'] = $user['fullname'];
+        $_SESSION['user_email'] = $user['email'];
+        session_regenerate_id(true);
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Log out the current regular user (preserves admin session if any)
+ */
+function userLogout(): void {
+    unset($_SESSION['user_id'], $_SESSION['user_fullname'], $_SESSION['user_email']);
+}
+
+/**
+ * Get current user info
+ */
+function getCurrentUser(): ?array {
+    if (!isUserLoggedIn()) return null;
+    return [
+        'id' => $_SESSION['user_id'],
+        'fullname' => $_SESSION['user_fullname'] ?? '',
+        'email' => $_SESSION['user_email'] ?? '',
+    ];
+}

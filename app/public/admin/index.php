@@ -32,6 +32,24 @@ renderAdminHeader('Dashboard', 'dashboard');
     </div>
 </div>
 
+<!-- Quick System Tools -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 20px 0;">
+    <a href="/phpmyadmin/" target="_blank" rel="noopener" class="stat-card" style="text-decoration: none; color: inherit; border-color: rgba(99, 102, 241, 0.3); transition: transform 0.2s, border-color 0.2s; display: flex; align-items: center; gap: 14px;">
+        <div style="font-size: 28px;">🗄️</div>
+        <div>
+            <div style="font-weight: 600; font-size: 15px; color: var(--text-primary); margin-bottom: 2px;">phpMyAdmin ↗</div>
+            <div style="font-size: 12px; color: var(--text-muted);">Quản lý cơ sở dữ liệu MySQL</div>
+        </div>
+    </a>
+    <a href="http://localhost:3000" target="_blank" rel="noopener" class="stat-card" style="text-decoration: none; color: inherit; border-color: rgba(249, 115, 22, 0.3); transition: transform 0.2s, border-color 0.2s; display: flex; align-items: center; gap: 14px;">
+        <div style="font-size: 28px;">📊</div>
+        <div>
+            <div style="font-weight: 600; font-size: 15px; color: var(--text-primary); margin-bottom: 2px;">Grafana Monitoring ↗</div>
+            <div style="font-size: 12px; color: var(--text-muted);">Giám sát hệ thống & Metrics</div>
+        </div>
+    </a>
+</div>
+
 <!-- Recent Episodes -->
 <div class="admin-header" style="margin-top:16px">
     <h2 class="admin-title" style="font-size:18px">📋 Tập podcast gần đây</h2>
